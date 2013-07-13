@@ -13,7 +13,7 @@ app.get('/', function(req, res){
 });
 
 app.get('/logviewer', function(req, res){
-	res.render('public/logviewer.html');
+	res.sendfile('public/logviewer.html');
 });
 
 app.listen(1337);

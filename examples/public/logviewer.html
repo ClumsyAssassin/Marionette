@@ -11,18 +11,22 @@
 		<meta name="description" content="A series of various marionette examples" />
 		<meta name="author" content="Robert" />
 
-		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
 		<!-- Vendor Libraries -->
-		<script type="text/javascript" src="/library/js/vendor/jquery.js"></script>
-		<script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="public/vendor/jquery.js"></script>
+		<script type="text/javascript" src="public/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+		<script type="text/javascript" src="public/vendor/underscore.js"></script>
+		<script type="text/javascript" src="public/vendor/backbone.js"></script>
+		<script type="text/javascript" src="public/vendor/backbone.marionette.js"></script>
 
 		<!-- Stylesheets -->
-		<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css"/>
-		<link rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.min.css"/>
+		<link rel="stylesheet" href="public/css/main.css"/>
 	</head>
 
 	<body>
+		<!-- Navigation -->
 		<div class="navbar navbar-inverse navbar-fixed-top">
 			<div class="navbar-inner">
 				<div class="container">
@@ -31,19 +35,105 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="brand" href="/Development/Aptana/Marionette/examples/index.html">Marionettes Example</a>
+					<a class="brand" href="/">Marionette Examples</a>
 					<div class="nav-collapse collapse">
 						<ul class="nav">
 							<li>
-								<a href="/Development/Aptana/Marionette/examples/index.html">Home</a>
+								<a href="/">Home</a>
 							</li>
 							<li class="active">
-								<a href="/Development/Aptana/Marionette/examples/logviewer.html">Log Viewer</a>
+								<a href="/logviewer">Log Viewer</a>
 							</li>
 						</ul>
 					</div><!--/.nav-collapse -->
 				</div>
 			</div>
+		</div><!-- Navigation -->
+
+		<div id="content" class="container">
+			<!-- Header -->
+			<div class="page-header">
+				<h1>Log Viewer</h1>
+			</div>
+			
+			<!-- Toolbar -->
+			<div class="btn-toolbar">
+				<div class="btn-group" data-toggle="buttons-radio">
+					<a class="btn" ><i class="icon-file"></i></a>
+					<a class="btn active"><i class="icon-globe"></i></a>
+				</div>
+				<div class="btn-group dropdown">
+					<a class="btn" data-toggle="dropdown"><i class="icon-user"></i>&nbsp;Environment</a>
+					<ul class="dropdown-menu" id="menu1">
+						<li>
+							<a href="#">All Applications</a>
+						</li>
+						<li class="dropdown-submenu">
+							<a href="#">Robert</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="#">Aws</a>
+								</li>
+								<li>
+									<a href="#">Idmgmt</a>
+								</li>
+								<li>
+									<a href="#">SystemAdmin</a>
+								</li>
+							</ul>
+						</li>
+						<li class="dropdown-submenu">
+							<a href="#">Robert</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="#">Aws</a>
+								</li>
+								<li>
+									<a href="#">Idmgmt</a>
+								</li>
+								<li>
+									<a href="#">SystemAdmin</a>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Contents -->
+			<div id="content-main" class="container-fluid"></div>
+		</div>
+		
+		<div id="footer">
+			<div class="container">
+				<p class="muted credit">
+					Example courtesy Robert Burnfield.
+				</p>
+			</div>
+			
+			<!-- Templates -->
+			<script type="text/template" id="requestLogList-template">
+				<thead>
+					<tr>
+						<th class="small-column"><span class="hidden-print hidden-desktop">Actions</span></th>
+						<th>Request ID</th>
+						<th>Environment</th>
+						<th>Line Count</th>
+						<th>Date Created</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</script>
+			
+			<script type="text/template" id="requestLogItem-template">
+				<td class="small-column"><i class="icon-eye-open"></i></td>
+				<td><%= id %></td>
+				<td><%= environment %></td>
+				<td><%= lineCount %></td>
+				<td><%= dateCreated %></td>
+			</script>
+			
+			<script type="text/javascript" src="public/js/logviewer/main.js"></script>
 		</div>
 	</body>
 </html>
