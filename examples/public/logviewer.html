@@ -19,6 +19,8 @@
 
 		<script type="text/javascript" src="public/vendor/underscore.js"></script>
 		<script type="text/javascript" src="public/vendor/backbone.js"></script>
+		<script type="text/javascript" src="public/vendor/backbone.paginator.js"></script>
+		<script type="text/javascript" src="public/vendor/backbone.fetch-cache.min.js"></script>
 		<script type="text/javascript" src="public/vendor/backbone.marionette.js"></script>
 
 		<!-- Stylesheets -->
@@ -55,84 +57,103 @@
 			<div class="page-header">
 				<h1>Log Viewer</h1>
 			</div>
-			
+
 			<!-- Toolbar -->
-			<div class="btn-toolbar">
-				<div class="btn-group" data-toggle="buttons-radio">
-					<a class="btn" ><i class="icon-file"></i></a>
-					<a class="btn active"><i class="icon-globe"></i></a>
-				</div>
-				<div class="btn-group dropdown">
-					<a class="btn" data-toggle="dropdown"><i class="icon-user"></i>&nbsp;Environment</a>
-					<ul class="dropdown-menu" id="menu1">
-						<li>
-							<a href="#">All Applications</a>
-						</li>
-						<li class="dropdown-submenu">
-							<a href="#">Robert</a>
-							<ul class="dropdown-menu">
-								<li>
-									<a href="#">Aws</a>
-								</li>
-								<li>
-									<a href="#">Idmgmt</a>
-								</li>
-								<li>
-									<a href="#">SystemAdmin</a>
-								</li>
-							</ul>
-						</li>
-						<li class="dropdown-submenu">
-							<a href="#">Robert</a>
-							<ul class="dropdown-menu">
-								<li>
-									<a href="#">Aws</a>
-								</li>
-								<li>
-									<a href="#">Idmgmt</a>
-								</li>
-								<li>
-									<a href="#">SystemAdmin</a>
-								</li>
-							</ul>
-						</li>
-					</ul>
-				</div>
-			</div>
+			<div id="content-toolbar" class="container-fluid"></div>
 
 			<!-- Contents -->
 			<div id="content-main" class="container-fluid"></div>
 		</div>
-		
+
 		<div id="footer">
 			<div class="container">
 				<p class="muted credit">
 					Example courtesy Robert Burnfield.
 				</p>
 			</div>
-			
-			<!-- Templates -->
+
+			<!-- Log List Templates -->
 			<script type="text/template" id="requestLogList-template">
-				<thead>
+				<table class="table">
+					<thead>
 					<tr>
-						<th class="small-column"><span class="hidden-print hidden-desktop">Actions</span></th>
-						<th>Request ID</th>
-						<th>Environment</th>
-						<th>Line Count</th>
-						<th>Date Created</th>
+					<th class="small-column"><span class="hidden-print hidden-desktop">Actions</span></th>
+					<th>Request ID</th>
+					<th>Environment</th>
+					<th>Line Count</th>
+					<th>Date Created</th>
 					</tr>
-				</thead>
-				<tbody></tbody>
+					</thead>
+					<tbody></tbody>
+				</table>
+				<% if(currentPage < totalPages) { %> 
+				<div class="container">
+					<button class="btn btn-large btn-block center js-showMore" style="max-width:500px" type="button">Show More</button>	
+				</div>
+				<% } %>
 			</script>
 			
 			<script type="text/template" id="requestLogItem-template">
 				<td class="small-column"><i class="icon-eye-open"></i></td>
 				<td><%= id %></td>
-				<td><%= environment %></td>
+				<td><%= fullEnvironment() %></td>
 				<td><%= lineCount %></td>
 				<td><%= dateCreated %></td>
 			</script>
 			
+			<script type="text/template" id="requestLogToolbar-template">
+				<div class="btn-group" data-toggle="buttons-radio">
+				<a class="btn" href="#/file"><i class="icon-file"></i></a>
+				<a class="btn active" href="#/request"><i class="icon-globe"></i></a>
+				</div>
+				<div class="btn-group dropdown">
+				<a class="btn" data-toggle="dropdown" href="#"><i class="icon-user"></i>&nbsp;Environment</a>
+				<ul class="dropdown-menu js-environmentList">
+					<li>
+						<a href="#">All Environments</a>
+					</li>
+				</ul>
+				</div>
+			</script>
+			
+			<script type="text/template" id="requestLogToolbar-environmentList-template">
+				<a href="#"><%= environment %></a>
+				<% if(_.isArray(applications) && _.isEmpty(applications) == false) { %>
+					<ul class="dropdown-menu">
+						<% _.each(applications, function(application){ %>
+							<li>
+								<a href="#"><%= application %></a>
+							</li>
+						<% }); %>
+					</ul>
+				<% } %>
+			</script>
+
+			<!-- File Log List Templates -->
+			<script type="text/template" id="fileLogList-template">
+				<thead>
+				<tr>
+				<th class="small-column"><span class="hidden-print hidden-desktop">Actions</span></th>
+				<th>Filename</th>
+				<th>Line Count</th>
+				<th>Last Edited</th>
+				</tr>
+				</thead>
+				<tbody></tbody>
+			</script>
+			<script type="text/template" id="fileLogItem-template">
+				<td class="small-column"><i class="icon-eye-open"></i></td>
+				<td><%= id %></td>
+				<td><%= lineCount %></td>
+				<td><%= lastEdited %></td>
+			</script>
+			<script type="text/template" id="fileLogToolbar-template">
+				<div class="btn-group" data-toggle="buttons-radio">
+				<a class="btn active" href="#/file"><i class="icon-file"></i></a>
+				<a class="btn js-btn-requestLogs" href="#/request"><i class="icon-globe"></i></a>
+				</div>
+			</script>
+
 			<script type="text/javascript" src="public/js/logviewer/main.js"></script>
 		</div>
 	</body>

@@ -1,0 +1,13 @@
+[
+	{
+		"environment": "katey"
+	}, {
+		"environment": "james",
+		"applications": ["App7", "App5", "App2"]
+	}, {
+		"environment": "ajan"
+	}, {
+		"environment": "barb",
+		"applications": ["App7", "App5", "App2"]
+	}
+]
