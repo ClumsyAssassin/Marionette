@@ -1,0 +1,10 @@
+<a href="#"><%= environment %></a>
+<% if(_.isArray(applications) && _.isEmpty(applications) == false) { %>
+<ul class="dropdown-menu">
+<% _.each(applications, function(application){ %>
+	<li>
+		<a href="#"><%= application %></a>
+	</li>
+<% }); %>
+</ul>
+<% } %>
